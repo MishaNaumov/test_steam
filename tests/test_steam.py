@@ -36,3 +36,4 @@ def test_steam_login(driver):
     wait.until_not(EC.presence_of_element_located((By.XPATH, locator_loading)))
     error_text = driver.find_element(By.XPATH, locator_error).text
     assert error_text == text, "The error text is missing"
+
