@@ -7,4 +7,3 @@ import pytest
 def driver():
     web_chrome = webdriver.Chrome()
     return web_chrome
-
