@@ -1,7 +1,7 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.wait import WebDriverWait
-from utility import Util
+from utils import JsonUtils
 import pytest
 
 
@@ -10,7 +10,7 @@ def driver():
     options = Options()
     options.add_argument("--lang=EN")
     web_chrome = webdriver.Chrome(options=options)
-    web_chrome.get(Util().get_url())
+    web_chrome.get(JsonUtils.get_url_1())
     return web_chrome
 
 

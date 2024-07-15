@@ -31,16 +31,16 @@ def test_steam_login(driver, wait, param):
         (EC.presence_of_element_located((By.XPATH, unique_home_page)))
     assert home_page.is_displayed(), "Home page not found"
 
-    wait.until(EC.presence_of_element_located((By.XPATH, locator_in))).click()
+    wait.until(EC.element_to_be_clickable((By.XPATH, locator_in))).click()
     login_page = wait.until \
         (EC.presence_of_element_located((By.XPATH, unique_login_page)))
     assert login_page.is_displayed(), "Login page not found"
 
-    wait.until(EC.presence_of_element_located
+    wait.until(EC.visibility_of_element_located
                ((By.XPATH, locator_user_name))).send_keys(user_name)
-    wait.until(EC.presence_of_element_located
+    wait.until(EC.element_to_be_clickable
                ((By.XPATH, locator_password))).send_keys(password)
-    wait.until(EC.presence_of_element_located
+    wait.until(EC.element_to_be_clickable
                ((By.XPATH, locator_button_in))).click()
     loading = wait.until(EC.presence_of_element_located
                          ((By.XPATH, locator_loading)))
