@@ -25,7 +25,6 @@ locator_button_in = "//button[@type='submit']"
                         f"password:{Faker().password()}")
     ]
 )
-
 def test_steam_login(driver, wait, param):
     user_name, password = param
     home_page = wait.until \
