@@ -11,6 +11,3 @@ class JsonUtils:
         if key_1 is not None:
             return cls.data[key][key_1]
         return cls.data[key]
-
-
-print(JsonUtils.get_attribute("options", "lang"))
