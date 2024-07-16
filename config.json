@@ -1,0 +1,7 @@
+{
+  "url_steam": "https://store.steampowered.com/",
+  "timeout": 10,
+  "options": [
+  "--lang=EN"
+  ]
+}
