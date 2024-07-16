@@ -1,5 +1,8 @@
+import selenium.common
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.wait import WebDriverWait
+from utils import JsonUtils
 from faker import Faker
 import pytest
 
@@ -25,20 +28,26 @@ locator_button_in = "//button[@type='submit']"
                         f"password:{Faker().password()}")
     ]
 )
-def test_steam_login(driver, wait, param):
+def test_steam_login(driver, param):
     user_name, password = param
-    home_page = wait.until \
-        (EC.presence_of_element_located((By.XPATH, unique_home_page)))
-    assert home_page.is_displayed(), "Home page not found"
+    wait = WebDriverWait(driver, JsonUtils.get_attribute("time"))
+
+    def is_page_opened(locator):
+        try:
+            wait.until \
+                (EC.presence_of_element_located((By.XPATH, locator)))
+            return True
+        except selenium.common.TimeoutException:
+            return False
+
+    assert is_page_opened(unique_home_page), "Home page not found"
 
     wait.until(EC.element_to_be_clickable((By.XPATH, locator_in))).click()
-    login_page = wait.until \
-        (EC.presence_of_element_located((By.XPATH, unique_login_page)))
-    assert login_page.is_displayed(), "Login page not found"
+    assert is_page_opened(unique_login_page), "Login page not found"
 
     wait.until(EC.visibility_of_element_located
                ((By.XPATH, locator_user_name))).send_keys(user_name)
-    wait.until(EC.element_to_be_clickable
+    wait.until(EC.visibility_of_element_located
                ((By.XPATH, locator_password))).send_keys(password)
     wait.until(EC.element_to_be_clickable
                ((By.XPATH, locator_button_in))).click()
