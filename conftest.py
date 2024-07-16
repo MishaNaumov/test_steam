@@ -7,7 +7,8 @@ import pytest
 @pytest.fixture()
 def driver():
     options = Options()
-    options.add_argument(JsonUtils.get_attribute("options", "lang"))
+    for item in JsonUtils.get_attribute("options"):
+        options.add_argument(item)
     web_chrome = webdriver.Chrome(options=options)
     web_chrome.get(JsonUtils.get_attribute("url_steam"))
     return web_chrome

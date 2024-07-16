@@ -7,7 +7,5 @@ class JsonUtils:
         data = json.load(file)
 
     @classmethod
-    def get_attribute(cls, key, key_1=None):
-        if key_1 is not None:
-            return cls.data[key][key_1]
+    def get_attribute(cls, key):
         return cls.data[key]

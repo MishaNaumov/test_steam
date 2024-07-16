@@ -6,18 +6,17 @@ from utils import JsonUtils
 from faker import Faker
 import pytest
 
-text = "Please check your password and account name and try again."
+TEXT = "Please check your password and account name and try again."
 
-locator_in = "//a[@class='global_action_link']"
-unique_home_page = "//a[@class='pulldown_desktop' and text() = 'Your Store']"
-unique_login_page = "//div[text()='Sign in']"
-locator_user_name = "//div[@class='page_content']//input[@type='text']"
-locator_password = "//div[@class='page_content']//input[@type='password']"
-locator_loading = "//button[@type='submit']//div//div"
-locator_error = \
+LOCATOR_IN = "//a[@class='global_action_link']"
+UNIQUE_HOME_PAGE = "//a[@class='pulldown_desktop' and text() = 'Your Store']"
+UNIQUE_LOGIN_PAGE = "//div[text()='Sign in']"
+LOCATOR_USER_NAME = "//div[@class='page_content']//input[@type='text']"
+LOCATOR_PASSWORD = "//div[@class='page_content']//input[@type='password']"
+LOCATOR_LOADING = "//button[@type='submit']//div//div"
+LOCATOR_ERROR = \
     "//div[contains(@class,'tool-tip-source')]/following-sibling::div[2]"
-locator_url = "//link[@rel='canonical']"
-locator_button_in = "//button[@type='submit']"
+LOCATOR_BUTTON_IN = "//button[@type='submit']"
 
 
 @pytest.mark.parametrize(
@@ -30,7 +29,7 @@ locator_button_in = "//button[@type='submit']"
 )
 def test_steam_login(driver, param):
     user_name, password = param
-    wait = WebDriverWait(driver, JsonUtils.get_attribute("time"))
+    wait = WebDriverWait(driver, JsonUtils.get_attribute("timeout"))
 
     def is_page_opened(locator):
         try:
@@ -40,22 +39,22 @@ def test_steam_login(driver, param):
         except selenium.common.TimeoutException:
             return False
 
-    assert is_page_opened(unique_home_page), "Home page not found"
+    assert is_page_opened(UNIQUE_HOME_PAGE), "Home page not opened"
 
-    wait.until(EC.element_to_be_clickable((By.XPATH, locator_in))).click()
-    assert is_page_opened(unique_login_page), "Login page not found"
+    wait.until(EC.element_to_be_clickable((By.XPATH, LOCATOR_IN))).click()
+    assert is_page_opened(UNIQUE_LOGIN_PAGE), "Login page not opened"
 
     wait.until(EC.visibility_of_element_located
-               ((By.XPATH, locator_user_name))).send_keys(user_name)
+               ((By.XPATH, LOCATOR_USER_NAME))).send_keys(user_name)
     wait.until(EC.visibility_of_element_located
-               ((By.XPATH, locator_password))).send_keys(password)
+               ((By.XPATH, LOCATOR_PASSWORD))).send_keys(password)
     wait.until(EC.element_to_be_clickable
-               ((By.XPATH, locator_button_in))).click()
+               ((By.XPATH, LOCATOR_BUTTON_IN))).click()
     loading = wait.until(EC.presence_of_element_located
-                         ((By.XPATH, locator_loading)))
+                         ((By.XPATH, LOCATOR_LOADING)))
     assert loading.is_displayed()
 
-    wait.until_not(EC.presence_of_element_located((By.XPATH, locator_loading)))
+    wait.until_not(EC.presence_of_element_located((By.XPATH, LOCATOR_LOADING)))
     error_text = wait.until \
-        (EC.presence_of_element_located((By.XPATH, locator_error))).text
-    assert error_text == text, "The error text is missing"
+        (EC.presence_of_element_located((By.XPATH, LOCATOR_ERROR))).text
+    assert error_text == TEXT, f"{error_text} The error text is missing"
